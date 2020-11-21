@@ -6,17 +6,22 @@ import { Career as ICareer } from "../domain/entity/career";
 import profileActions from "../store/profile/actions";
 import { PROFILE } from "../domain/services/profile";
 import useStyles from "./styles";
+import { exitEmptyCareers } from "../domain/services/career";
 
 const Career = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const careers = useSelector((state: RootState) => state.profile.careers);
+    const isAbleToAddCarrer = exitEmptyCareers(careers);
 
     const handleChange = (member: Partial<ICareer>, i: number) => {
         dispatch(profileActions.setCareer({ career: member, index: i }))
     }
     const handleAddCareer = () => {
         dispatch(profileActions.addCareer({}));
+    }
+    const handleDeleteCareer = (i: number) => {
+        dispatch(profileActions.deleteCareer(i));
     }
     return (
         <>
@@ -45,9 +50,12 @@ const Career = () => {
                             </Grid>
                         </Grid>
                     </div>
+                    <Button className={classes.button} onClick={() => handleDeleteCareer(i)} variant="outlined" color="secondary">
+                        職歴{i + 1} を削除
+                    </Button>
                 </Fragment>
             ))}
-            <Button className={classes.button} onClick={handleAddCareer} fullWidth variant="outlined">
+            <Button className={classes.button} onClick={handleAddCareer} fullWidth variant="outlined" disabled={isAbleToAddCarrer}>
                 職歴の追加
             </Button>
         </>

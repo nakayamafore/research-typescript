@@ -11,6 +11,7 @@ import useStyles from "./styles";
 const Address = () => {
     const dispatch = useDispatch();
     const profile = useSelector((state: RootState) => state.profile);
+    const validation = useSelector((state: RootState) => state.validation);
 
     const classes = useStyles();
     const handleAddressChange = (member: Partial<IAddress>) => {
@@ -24,13 +25,17 @@ const Address = () => {
     return (
         <>
             <TextField fullWidth className={classes.formField} label={PROFILE.ADDRESS.POSTALCODE}
-                value={profile.address.postalcode} onChange={e => handlePostalcodeChange(e.target.value)} />
+                value={profile.address.postalcode} onChange={e => handlePostalcodeChange(e.target.value)}
+                required error={!!validation.message.address.postalcode} helperText={validation.message.address.postalcode} />
             <TextField fullWidth className={classes.formField} label={PROFILE.ADDRESS.PREFECTURE}
-                value={profile.address.prefecture} onChange={e => handleAddressChange({ prefecture: e.target.value })} />
+                value={profile.address.prefecture} onChange={e => handleAddressChange({ prefecture: e.target.value })}
+                required error={!!validation.message.address.prefecture} helperText={validation.message.address.prefecture} />
             <TextField fullWidth className={classes.formField} label={PROFILE.ADDRESS.CITY}
-                value={profile.address.city} onChange={e => handleAddressChange({ city: e.target.value })} />
+                value={profile.address.city} onChange={e => handleAddressChange({ city: e.target.value })}
+                required error={!!validation.message.address.city} helperText={validation.message.address.city} />
             <TextField fullWidth className={classes.formField} label={PROFILE.ADDRESS.RESTADDRES}
-                value={profile.address.restAddress} onChange={e => handleAddressChange({ restAddress: e.target.value })} />
+                value={profile.address.restAddress} onChange={e => handleAddressChange({ restAddress: e.target.value })}
+                required error={!!validation.message.address.restAddress} helperText={validation.message.address.restAddress} />
         </>
     )
 }

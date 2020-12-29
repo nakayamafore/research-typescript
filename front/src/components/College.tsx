@@ -7,7 +7,8 @@ import {
     FormControl,
     InputLabel,
     Select,
-    MenuItem
+    MenuItem,
+    FormHelperText
 } from "@material-ui/core";
 
 import { RootState } from "../domain/entity/rootState";
@@ -23,6 +24,7 @@ const College = () => {
     const dispatch = useDispatch();
     const colleges = useSelector((state: RootState) => state.colleges);
     const profile = useSelector((state: RootState) => state.profile);
+    const validation = useSelector((state: RootState) => state.validation);
     const classes = useStyles();
 
     const handleChange = (name: string) => {
@@ -66,8 +68,9 @@ const College = () => {
             )}
             {profile.college.name && (
                 <>
-                    <TextField className={classes.formField} label={PROFILE.COLLEGE.NAME} fullWidth value={profile.college.name} disabled />
-                    <FormControl fullWidth className={classes.formField}>
+                    <TextField className={classes.formField} label={PROFILE.COLLEGE.NAME} fullWidth
+                        value={profile.college.name} disabled />
+                    <FormControl fullWidth className={classes.formField} required error={!!validation.message.college.faculty}>
                         <InputLabel>{PROFILE.COLLEGE.FACULTY}</InputLabel>
                         <Select value={profile.college.faculty} onChange={e => handleCollegeChange({
                             faculty: e.target.value as string,
@@ -79,9 +82,12 @@ const College = () => {
                                 ))
                             }
                         </Select>
+                        <FormHelperText>
+                            {validation.message.college.faculty}
+                        </FormHelperText>
                     </FormControl>
                     {currentFaculty?.department.length > 0 && (
-                        <FormControl fullWidth className={classes.formField}>
+                        <FormControl fullWidth className={classes.formField} required>
                             <InputLabel>{PROFILE.COLLEGE.DEPARTMENT}</InputLabel>
                             <Select value={profile.college.department} onChange={e => handleCollegeChange({ department: e.target.value as string })}>
                                 {currentFaculty.department.map(d => (

@@ -14,7 +14,7 @@ export type Validation = {
     }
     careers: {
         company: string;
-        positon: string;
+        position: string;
         startAt: string;
         endAt: string;
     }[];

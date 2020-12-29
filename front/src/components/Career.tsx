@@ -13,6 +13,7 @@ const Career = () => {
     const dispatch = useDispatch();
     const careers = useSelector((state: RootState) => state.profile.careers);
     const isAbleToAddCarrer = exitEmptyCareers(careers);
+    const validation = useSelector((state: RootState) => state.validation)
 
     const handleChange = (member: Partial<ICareer>, i: number) => {
         dispatch(profileActions.setCareer({ career: member, index: i }))
@@ -31,22 +32,26 @@ const Career = () => {
                         職歴{i + 1}
                     </Typography>
                     <TextField className={classes.formField} fullWidth label={PROFILE.CAREERS.COMPANY} value={c.company}
-                        onChange={e => handleChange({ company: e.target.value }, i)} />
+                        onChange={e => handleChange({ company: e.target.value }, i)}
+                        error={!!validation.message.careers[i]?.company} helperText={validation.message.careers[i]?.company} />
                     <TextField className={classes.formField} fullWidth label={PROFILE.CAREERS.POSITION} value={c.position}
-                        onChange={e => handleChange({ position: e.target.value }, i)} />
+                        onChange={e => handleChange({ position: e.target.value }, i)}
+                        error={!!validation.message.careers[i]?.position} helperText={validation.message.careers[i]?.position} />
                     <div className={classes.careerSpan}>
                         <InputLabel shrink>{PROFILE.CAREERS.SPAN}</InputLabel>
                         <Grid container spacing={1} alignContent="space-between" alignItems="center">
                             <Grid item xs={5}>
                                 <TextField fullWidth type="month" InputLabelProps={{ shrink: true }} value={c.startAt}
-                                    onChange={e => handleChange({ startAt: e.target.value }, i)} />
+                                    onChange={e => handleChange({ startAt: e.target.value }, i)}
+                                    error={!!validation.message.careers[i]?.startAt} helperText={validation.message.careers[i]?.startAt} />
                             </Grid>
                             <Grid item xs={2}>
                                 <Typography align="center">〜</Typography>
                             </Grid>
                             <Grid item xs={5}>
                                 <TextField fullWidth type="month" InputLabelProps={{ shrink: true }} value={c.endAt}
-                                    onChange={e => handleChange({ endAt: e.target.value }, i)} />
+                                    onChange={e => handleChange({ endAt: e.target.value }, i)}
+                                    error={!!validation.message.careers[i]?.endAt} helperText={validation.message.careers[i]?.endAt} />
                             </Grid>
                         </Grid>
                     </div>

@@ -29,13 +29,20 @@ export const calculateValidation = (profile: Profile) => {
             )
         },
         college: {
-            faculty: ""
+            faculty: facultyValication(profile.college)
         },
-        careers: []
+        careers: careerValidation(profile.careers)
     }
     return message;
 }
 const emptyValidation = (target: string, col: string) => isEmpty(target) ? `${col}を入力してください。` : "";
 const lengthValidation = (target: string, maxLen: number) => isTooLong(target, maxLen) ? `${maxLen}文字以下で入力してください。` : "";
+const careerValidation = (careers: Career[]) => careers.map(c => ({
+    company: emptyValidation(c.company, PROFILE.CAREERS.COMPANY),
+    position: emptyValidation(c.position, PROFILE.CAREERS.POSITION),
+    startAt: emptyValidation(c.startAt, PROFILE.CAREERS.START_AT),
+    endAt: emptyValidation(c.endAt, PROFILE.CAREERS.END_AT)
+}))
+const facultyValication = (college: College) => college.name && !college.faculty ? `${PROFILE.COLLEGE.FACULTY}を入力してください。` : "";
 const isEmpty = (str: string) => !str.trim();
 const isTooLong = (str: string, maxLen: number) => str.trim().length >= maxLen;
